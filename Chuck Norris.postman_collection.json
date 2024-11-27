@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "aaacb251-b3ea-4f8f-857e-c7ed37630f0c",
+		"name": "Chuck Norris",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39996043"
+	},
+	"item": [
+		{
+			"name": "Random Joke",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Response body contains the word 'Chuck'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Chuck\");\r",
+							"});\r",
+							"pm.test(\"Response body contains the word 'error'\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"error\");\r",
+							"});\r",
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>Categories</th>\r",
+							"        <th>Created At</th>\r",
+							"        <th>Icon URL</th>\r",
+							"        <th>ID</th>\r",
+							"        <th>Updated At</th>\r",
+							"        <th>URL</th>\r",
+							"        <th>Value</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    <tr>\r",
+							"        <td>{{categories}}</td>\r",
+							"        <td>{{created_at}}</td>\r",
+							"        <td>{{icon_url}}</td>\r",
+							"        <td>{{id}}</td>\r",
+							"        <td>{{updated_at}}</td>\r",
+							"        <td>{{url}}</td>\r",
+							"        <td>{{value}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/random",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category Joke",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response should contain a joke value\", function () {\r",
+							"    pm.expect(pm.response.json().value).to.be.a('string');\r",
+							"    pm.expect(pm.response.json().value).not.to.be.empty;\r",
+							"});\r",
+							"pm.test(\"Response should contain a joke about religion\", function () {\r",
+							"    pm.expect(pm.response.json().categories).to.include(\"religion\");\r",
+							"});\r",
+							"pm.test(\"Joke should contain at least 10 characters\", function () {\r",
+							"    pm.expect(pm.response.json().value.length).to.be.at.least(10);\r",
+							"});\r",
+							"pm.test(\"Joke should contain at least 150 characters\", function () {\r",
+							"    pm.expect(pm.response.json().value.length).to.be.at.least(150);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/random?category=food",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"random"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "food"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Available Categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 80ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(80);\r",
+							"});\r",
+							"pm.test(\"Count of categories is correct\", function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(16);\r",
+							"});\r",
+							"pm.test(\"Verify 'food' is not a category\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"food\");\r",
+							"});\r",
+							"pm.test(\"Verify 'cars' is not a category\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"cars\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/categories",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Free Text Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check query value is not 'religion'\", function () {\r",
+							"    var queryValue = pm.request.url.query.get('query');\r",
+							"    pm.expect(queryValue).to.not.equal(\"religion\");\r",
+							"});\r",
+							"pm.test(\"Verify response contains a joke\", function () {\r",
+							"    pm.expect(pm.response.json().result[0].value).to.be.a('string');\r",
+							"});\r",
+							"pm.test(\"Check response status code is not 500\", function () {\r",
+							"    pm.response.to.not.have.status(500);\r",
+							"});\r",
+							"pm.test(\"Verify 'value' field has more than 3 characters\", function () {\r",
+							"    pm.expect(pm.response.json().result[0].value.length).to.be.greaterThan(3);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.chucknorris.io/jokes/search?query=fa",
+					"protocol": "https",
+					"host": [
+						"api",
+						"chucknorris",
+						"io"
+					],
+					"path": [
+						"jokes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "fa"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
